@@ -32,55 +32,53 @@
 <body>
 <div class="container" style="margin-top: 15px;">
     <div class="row" style="margin-top: 50px;">
-        <div class="col-1"><p>
-            <button onclick="getData()">Get Data</button>
-        </p>
-        </div>
-        <!--<div class="col-2">-->
+        <div class="col-md-12">
+            <p>
+                <button onclick="getData()">Get Data</button>
+            </p>
+
+            <p>
+                <button onclick="postData()" style="margin-left: 25px;">Voeg Vliegveld Toe</button>
+                <label for="plaatsVliegveld">Plaats van het vliegveld:</label><input type="text" id="plaatsVliegveld"/>
+            </p>
             <!--<p>-->
-                <!--<button onclick="postData()" style="margin-left: 25px;">Voeg Vliegveld Toe</button>-->
-                <!--<label for="movieTitle">Plaats van het vliegveld:</label><input type="text" id="movieTitle"/>-->
+            <!--<button onclick="deleteData()" style="margin-left: 25px;">Verwijder Vliegveld</button>-->
+            <!--<label for="movieToRemovie">ID van het vliegveld:</label><input type="text" id="movieToRemovie"/>-->
             <!--</p>-->
+            <!--</div>-->
+            <!--<div class="col-2">-->
             <!--<p>-->
-                <!--<button onclick="deleteData()" style="margin-left: 25px;">Verwijder Vliegveld</button>-->
-                <!--<label for="movieToRemovie">ID van het vliegveld:</label><input type="text" id="movieToRemovie"/>-->
+            <!--<button onclick="putData()" style="margin-left: 25px;">Add Movie</button>-->
+            <!--<label for="movieTitle">Plaats van het vliegveld:</label><input type="text" id="movieTitle"/>-->
             <!--</p>-->
-        <!--</div>-->
-        <!--<div class="col-2">-->
-            <!--<p>-->
-                <!--<button onclick="putData()" style="margin-left: 25px;">Add Movie</button>-->
-                <!--<label for="movieTitle">Plaats van het vliegveld:</label><input type="text" id="movieTitle"/>-->
-            <!--</p>-->
-        <!--</div>-->
-        <div class="col-8">
+            <!--</div>-->
+
         </div>
     </div>
-</div>
 
 
-<div class="container" style="margin-top: 15px;">
-    <div class="table-wrapper-scroll-y">
-        <table class="table table-hover table-bordered" id="myTable">
-            <thead>
-            <tr>
-                <th scope="col"><b>Movie ID</b></th>
-                <th scope="col"><b>Title</b></th>
-                <th scope="col"><b>Year</b></th>
-                <th scope="col"><b>Did you watch it?</b></th>zz
-            </tr>
-            </thead>
-            <tbody id="myTableBody">
+    <div class="container" style="margin-top: 15px;">
+        <div class="table-wrapper-scroll-y">
+            <table class="table table-hover table-bordered" id="myTable">
+                <thead>
+                <tr>
+                    <th scope="col"><b>Plaats</b></th>
+                    <th scope="col"><b>Id</b></th>
+                    <th scope="col"><b>Vliegtuigen</b></th>
+                </tr>
+                </thead>
+                <tbody id="myTableBody">
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<div id="movies">
-</div>
+    <div id="movies">
+    </div>
 
 
-<script type="application/javascript" language="JavaScript">
+    <script type="application/javascript" language="JavaScript">
     var getData = function (){
         $.ajax({
             url: "http://localhost:8080/api/vliegveld/all",
@@ -90,7 +88,7 @@
                 $('#myTableBody').html("");
                 $.each(result, function(index, vliegveld) {
                     $('#myTableBody').append(
-                        "<tr><td>" + vliegveld.id + "</td> <td>" + vliegveld.plaats + "</td> <td>" + vliegveld.vliegtuigen + "</td></tr>"
+                        "<tr><td>" + vliegveld.plaats + "</td> <td>" + vliegveld.id + "</td> <td>" + vliegveld.vliegtuigen + "</td></tr>"
                     );
                 });
             },
@@ -101,29 +99,29 @@
         });
     };
 
-    <!--var postData = function (){-->
-        <!--var movieTitle = $('#movieTitle').val();-->
-        <!--console.log(movieTitle);-->
-        <!--if(movieTitle == "") {-->
-            <!--return;-->
-        <!--}-->
-        <!--$.ajax({-->
-            <!--url: "http://localhost:8080/api/movie",-->
-            <!--type: "post",-->
-            <!--data: JSON.stringify({-->
-                <!--name: movieTitle-->
-            <!--}),-->
-            <!--contentType: "application/json",-->
-            <!--success: function(result) {-->
-                <!--$('#movieTitle').val("");-->
-                <!--getData();-->
-            <!--},-->
-            <!--error: function(result) {-->
-                <!--console.log(result);-->
-                <!--window.alert("Couldn't add movie! " + result.responseText);-->
-            <!--}-->
-        <!--});-->
-    <!--};-->
+    var postData = function (){
+        var plaatsVliegveld = $('#plaatsVliegveld').val();
+        console.log(plaatsVliegveld);
+        if(plaatsVliegveld == "") {
+            return;
+        }
+        $.ajax({
+            url: "http://localhost:8080/api/vliegveld",
+            type: "post",
+            data: JSON.stringify({
+                plaats: plaatsVliegveld
+            }),
+            contentType: "application/json",
+            success: function(result) {
+                $('#plaatsVliegveld').val("");
+                getData();
+            },
+            error: function(result) {
+                console.log(result);
+                window.alert("Couldn't add this airport! " + result.responseText);
+            }
+        });
+    };
 
     <!--var postData = function (){-->
         <!--var movieTitle = $('#movieTitle').val();-->
@@ -168,13 +166,15 @@
             <!--}-->
         <!--});-->
     <!--};-->
-</script>
+
+    </script>
 
 
-<script>$(document).ready( function () {
+    <script>$(document).ready( function () {
 $('#myTable').DataTable();
 } );
-</script>
+
+    </script>
 
 
 </body>
