@@ -6,6 +6,7 @@ import java.util.*;
 public class Vliegveld {
     @Id
 
+    private String id;
     private String Plaats;
     public ArrayList<Vliegtuig> vliegtuigen;
 
