@@ -4,21 +4,24 @@ import javax.persistence.Id;
 import java.util.*;
 
 public class Vliegveld {
-    @Id
 
-    private String id;
-    private String Plaats;
+
+    private String plaats;
+
+    @Id
+        private String id;
+
     public ArrayList<Vliegtuig> vliegtuigen;
 
     public Vliegveld() {
     }
 
     public String getPlaats() {
-        return Plaats;
+        return plaats;
     }
 
     public void setPlaats(String plaats) {
-        Plaats = plaats;
+        this.plaats = plaats;
     }
 
     public ArrayList<Vliegtuig> getVliegtuigen() {
@@ -27,5 +30,13 @@ public class Vliegveld {
 
     public void setVliegtuigen(ArrayList<Vliegtuig> vliegtuigen) {
         this.vliegtuigen = vliegtuigen;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

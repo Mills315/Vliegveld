@@ -33,76 +33,94 @@
 <div class="container" style="margin-top: 15px;">
     <div class="row" style="margin-top: 50px;">
         <div class="col-md-12">
+
             <p>
                 <button onclick="getData()">Get Data</button>
-            </p>
+                <br></p>
+
 
             <p>
-                <button onclick="postData()" style="margin-left: 25px;">Voeg Vliegveld Toe</button>
-                <label for="plaatsVliegveld">Plaats van het vliegveld:</label><input type="text" id="plaatsVliegveld"/>
+                <br>
+                <label for="plaatsVliegveld">Plaats van het vliegveld:</label><input type="text"
+                                                                                     id="plaatsVliegveld"/><br>
+                <button onclick="maakVliegveld()">Voeg Vliegveld Toe</button>
             </p>
-            <!--<p>-->
-            <!--<button onclick="deleteData()" style="margin-left: 25px;">Verwijder Vliegveld</button>-->
-            <!--<label for="movieToRemovie">ID van het vliegveld:</label><input type="text" id="movieToRemovie"/>-->
-            <!--</p>-->
-            <!--</div>-->
-            <!--<div class="col-2">-->
-            <!--<p>-->
-            <!--<button onclick="putData()" style="margin-left: 25px;">Add Movie</button>-->
-            <!--<label for="movieTitle">Plaats van het vliegveld:</label><input type="text" id="movieTitle"/>-->
-            <!--</p>-->
-            <!--</div>-->
+            <br>
+
+            <p>
+                <br>
+                <label for="naamVliegtuig">Naam Vliegtuig</label><input type="text" id="naamVliegtuig"/><br>
+                <label for="VliegveldX">Plaats van het vliegveld:</label><input type="text" id="VliegveldX"/><br>
+                <button onclick="addPlane()">Voeg Vliegtuig Toe Aan Vliegveld</button>
+            </p>
+            <br>
+
+
+            <p>
+                <button onclick="deleteData()">Verwijder Vliegveld</button>
+                <br>
+                <label for="verwijderVliegveld">Naam van het vliegveld:</label><input type="text"
+                                                                                      id="verwijderVliegveld"/><br>
+            </p>
+            <br>
+
+
+            <p>
+                <button onclick="putData()">Vliegtuig x vliegt naar y</button>
+                <br>
+                <label for="movieTitle">Plaats van het vliegveld:</label><input type="text" id="movieTitle"/><br></p>
+            <br>
 
         </div>
     </div>
+</div>
 
 
-    <div class="container" style="margin-top: 15px;">
-        <div class="table-wrapper-scroll-y">
-            <table class="table table-hover table-bordered" id="myTable">
-                <thead>
-                <tr>
-                    <th scope="col"><b>Plaats</b></th>
-                    <th scope="col"><b>Id</b></th>
-                    <th scope="col"><b>Vliegtuigen</b></th>
-                </tr>
-                </thead>
-                <tbody id="myTableBody">
+<div class="container" style="margin-top: 15px;">
+    <div class="table-wrapper-scroll-y">
+        <table class="table table-hover table-bordered" id="myTable">
+            <thead>
+            <tr>
+                <th scope="col"><b>Plaats</b></th>
+                <th scope="col"><b>Vliegtuigen</b></th>
+            </tr>
+            </thead>
+            <tbody id="myTableBody">
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 
-    <div id="movies">
-    </div>
+<div id="movies">
+</div>
 
 
-    <script type="application/javascript" language="JavaScript">
-    var getData = function (){
+<script type="application/javascript" language="JavaScript">
+    var getData = function () {
         $.ajax({
             url: "http://localhost:8080/api/vliegveld/all",
             type: "get",
-            success: function (result){
+            success: function (result) {
                 console.log(result);
                 $('#myTableBody').html("");
-                $.each(result, function(index, vliegveld) {
+                $.each(result, function (index, vliegveld) {
                     $('#myTableBody').append(
-                        "<tr><td>" + vliegveld.plaats + "</td> <td>" + vliegveld.id + "</td> <td>" + vliegveld.vliegtuigen + "</td></tr>"
+                        "<tr><td>" + vliegveld.plaats + "</td> <td>" + vliegveld.vliegtuigen + "</td></tr>"
                     );
                 });
             },
-            error: function(result) {
+            error: function (result) {
                 console.log(result);
                 $('#myTable').html(result.responseText);
             }
         });
     };
 
-    var postData = function (){
+    var maakVliegveld = function () {
         var plaatsVliegveld = $('#plaatsVliegveld').val();
         console.log(plaatsVliegveld);
-        if(plaatsVliegveld == "") {
+        if (plaatsVliegveld == "") {
             return;
         }
         $.ajax({
@@ -112,69 +130,100 @@
                 plaats: plaatsVliegveld
             }),
             contentType: "application/json",
-            success: function(result) {
+            success: function (result) {
                 $('#plaatsVliegveld').val("");
                 getData();
             },
-            error: function(result) {
+            error: function (result) {
                 console.log(result);
                 window.alert("Couldn't add this airport! " + result.responseText);
             }
         });
     };
 
-    <!--var postData = function (){-->
-        <!--var movieTitle = $('#movieTitle').val();-->
-        <!--console.log(movieTitle);-->
-        <!--if(movieTitle == "") {-->
-            <!--return;-->
-        <!--}-->
-        <!--$.ajax({-->
-            <!--url: "http://localhost:8080/api/movie",-->
-            <!--type: "post",-->
-            <!--data: JSON.stringify({-->
-                <!--name: movieTitle-->
-            <!--}),-->
-            <!--contentType: "application/json",-->
-            <!--success: function(result) {-->
-                <!--$('#movieTitle').val("");-->
-                <!--getData();-->
-            <!--},-->
-            <!--error: function(result) {-->
-                <!--console.log(result);-->
-                <!--window.alert("Couldn't add movie! " + result.responseText);-->
-            <!--}-->
-        <!--});-->
-    <!--};-->
+    var addPlane = function () {
+        var naamVliegtuig = $('#naamVliegtuig').val();
+        console.log(naamVliegtuig);
+        if (naamVliegtuig == "") {
+            return;
+        }
+        var VliegveldX = $('#VliegveldX').val();
+        console.log(VliegveldX);
+        if (VliegveldX == "") {
+            return;
+        }
+        $.ajax({
+            url: "http://localhost:8080/api/vliegveld",
+            type: "put",
+            data: JSON.stringify({
+                plaats: plaatsVliegveld
+            }),
+            contentType: "application/json",
+            success: function (result) {
+                $('#naamVliegtuig').val("");
+                $('#VliegveldX').val("");
+                getData();
+            },
+            error: function (result) {
+                console.log(result);
+                window.alert("Couldn't add this airport! " + result.responseText);
+            }
+        });
+    };
 
-    <!--var deleteData = function (){-->
-        <!--var movieToRemovie = $('#movieToRemovie').val();-->
-        <!--console.log(movieToRemovie);-->
-        <!--if(movieToRemovie == "") {-->
-            <!--return;-->
-        <!--}-->
-        <!--$.ajax({-->
-            <!--url: "http://localhost:8080/api/movie/" + movieToRemovie,-->
-            <!--type: "delete",-->
-            <!--success: function(result) {-->
-                <!--$('#movieToRemovie').val("");-->
-                <!--getData();-->
-            <!--},-->
-            <!--error: function(result) {-->
-                <!--console.log(result);-->
-                <!--window.alert("Couldn't removie movie! " + result.responseText);-->
-            <!--}-->
-        <!--});-->
-    <!--};-->
-
-    </script>
+    var deleteData = function () {
+        var verwijderVliegveld = $('#verwijderVliegveld').val();
+        console.log(verwijderVliegveld);
+        if (verwijderVliegveld == "") {
+            return;
+        }
+        $.ajax({
+            url: "http://localhost:8080/api/vliegveld/delete/" + verwijderVliegveld,
+            type: "delete",
+            success: function (result) {
+                $('#verwijderVliegveld').val("");
+                getData();
+            },
+            error: function (result) {
+                console.log(result);
+                window.alert("Could not remove airport!" + result.responseText);
+            }
+        });
+    };
 
 
-    <script>$(document).ready( function () {
-$('#myTable').DataTable();
-} );
+</script>
+<!--var postData = function (){-->
+<!--var movieTitle = $('#movieTitle').val();-->
+<!--console.log(movieTitle);-->
+<!--if(movieTitle == "") {-->
+<!--return;-->
+<!--}-->
+<!--$.ajax({-->
+<!--url: "http://localhost:8080/api/movie",-->
+<!--type: "post",-->
+<!--data: JSON.stringify({-->
+<!--name: movieTitle-->
+<!--}),-->
+<!--contentType: "application/json",-->
+<!--success: function(result) {-->
+<!--$('#movieTitle').val("");-->
+<!--getData();-->
+<!--},-->
+<!--error: function(result) {-->
+<!--console.log(result);-->
+<!--window.alert("Couldn't add movie! " + result.responseText);-->
+<!--}-->
+<!--});-->
+<!--};-->
 
-    </script>
+
+<script>$(document).ready(function () {
+    $('#myTable').DataTable();
+});
+
+
+</script>
 
 
 </body>

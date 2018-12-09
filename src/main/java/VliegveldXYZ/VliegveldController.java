@@ -16,7 +16,7 @@ public class VliegveldController {
     }
 
     @RequestMapping(value = "all", method = RequestMethod.GET)
-    public Iterable<Vliegveld> getall() {
+    public Iterable<Vliegveld> getal() {
         return this.vliegveldRepository.findAll();
     }
 
@@ -25,13 +25,13 @@ public class VliegveldController {
         this.vliegveldRepository.save(vliegveld);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public @ResponseBody void remove(@PathVariable String id) {
-        this.vliegveldRepository.deleteById(id);
+    @RequestMapping(value = "delete/{plaats}", method = RequestMethod.DELETE)
+    public @ResponseBody void remove(@PathVariable @RequestBody Vliegveld plaats) {
+
+        this.vliegveldRepository.delete(plaats);
     }
 
     /*
-
     @RequestMapping(value = "watched/{id}", method = RequestMethod.PUT)
     public void makeWatched(@PathVariable String id) {
         Vliegveld vliegveld = this.vliegveldRepository.findById(id).get();
@@ -49,6 +49,6 @@ public class VliegveldController {
         movie.setYear(year);
         movieRepository.save(movie);
     }
-    */
 
+*/
 }
